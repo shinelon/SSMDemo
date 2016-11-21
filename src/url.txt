@@ -1,0 +1,8 @@
+http://localhost:8080/maven-web-demo/student/showInfo/1.htmls
+
+http://localhost:8080/maven-web-demo/upload/basicView.htmls
+
+http://localhost:8080/maven-web-demo/upload/basicUpload.htmls
+
+
+http://localhost:8080/maven-web-demo/student/showInfo/showInfo/jsp.htmls

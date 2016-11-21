@@ -1,0 +1,24 @@
+	<cache name="memoryCache"
+            maxElementsInMemory="500" <!-- 最大缓存数量 -->
+            eternal="true"  <!-- 在内存中永久存在，由于此处设置为true，所以以下两个参数无效 -->
+            timeToIdleSeconds="3600"  
+            timeToLiveSeconds="7200"
+            overflowToDisk="false"/>  
+            
+     <cache name="reportCache"
+            maxElementsInMemory="500"
+            eternal="false"  <!-- 不在内存中永久存在 -->
+            timeToIdleSeconds="3600"  <!-- 一个小时之内不再用到这个缓存就清理 -->
+            timeToLiveSeconds="7200"  <!-- 两个小时以后不管是否用到这个缓存都会被清理 -->
+            overflowToDisk="false"/>  <!-- 当超过500是不会写入磁盘 -->
+
+     <cache name="diskCache"   <!-- 以上两种都是内存缓存，这里配置的是磁盘缓存 -->
+            maxElementsInMemory="10000"
+            overflowToDisk="true"  <!-- 当内存中超过10000， 就写入磁盘 -->
+            eternal="false"
+            memoryStoreEvictionPolicy="LRU"  <!-- 这里配置的是清除缓存时的策略 -->
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="600"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="100000"
+            diskPersistent="false" />  <!-- 不是磁盘永存 -->

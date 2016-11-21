@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.dao.Ip17Mapper" >
+  <resultMap id="BaseResultMap" type="demo.model.Ip17" >
+    <result column="Id" property="id" jdbcType="DOUBLE" />
+    <result column="RegionId" property="regionid" jdbcType="DOUBLE" />
+    <result column="IpStart" property="ipstart" jdbcType="VARCHAR" />
+    <result column="IpEnd" property="ipend" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+  </resultMap>
+     <insert id="insertBatch" parameterType="java.util.List">
+        
+        insert into ip_17 (IpStart,IpEnd,country,province,city)   
+        values  
+        <foreach collection="list" item="item" index="index" separator="," >  
+            (#{item.ipstart},#{item.ipend},#{item.country},#{item.province},#{item.city})  
+        </foreach>  
+    </insert> 
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.dao.IpcnMapper">
+    <resultMap
+        id="BaseResultMap"
+        type="demo.model.Ipcn">
+        <result
+            column="ipstart"
+            property="ipstart"
+            jdbcType="VARCHAR" />
+        <result
+            column="ipend"
+            property="ipend"
+            jdbcType="VARCHAR" />
+        <result
+            column="mask"
+            property="mask"
+            jdbcType="VARCHAR" />
+        <result
+            column="num"
+            property="num"
+            jdbcType="VARCHAR" />
+    </resultMap>
+    <select
+        id="selectAll"
+        resultMap="BaseResultMap">
+        SELECT
+        ipstart,
+        ipend,
+        mask,
+        num
+        FROM ip_cn
+        ORDER BY ipstart ASC
+    </select>
+
+    <insert
+        id="insert"
+        parameterType="demo.model.Ipcn">
+        insert into ip_cn (ipstart, ipend, mask,
+        num)
+        values
+        (#{ipstart,jdbcType=VARCHAR}, #{ipend,jdbcType=VARCHAR}, #{mask,jdbcType=VARCHAR},
+        #{num,jdbcType=VARCHAR})
+    </insert>
+
+    <insert
+        id="insertSelective"
+        parameterType="demo.model.Ipcn">
+        insert into ip_cn
+        <trim
+            prefix="("
+            suffix=")"
+            suffixOverrides=",">
+            <if test="ipstart != null">
+                ipstart,
+            </if>
+            <if test="ipend != null">
+                ipend,
+            </if>
+            <if test="mask != null">
+                mask,
+            </if>
+            <if test="num != null">
+                num,
+            </if>
+        </trim>
+        <trim
+            prefix="values ("
+            suffix=")"
+            suffixOverrides=",">
+            <if test="ipstart != null">
+                #{ipstart,jdbcType=VARCHAR},
+            </if>
+            <if test="ipend != null">
+                #{ipend,jdbcType=VARCHAR},
+            </if>
+            <if test="mask != null">
+                #{mask,jdbcType=VARCHAR},
+            </if>
+            <if test="num != null">
+                #{num,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

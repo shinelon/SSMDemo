@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.dao.GradeMapper" >
+  <resultMap id="BaseResultMap" type="demo.model.Grade" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="gname" property="gname" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 1个年级 多个学生 1-N 使用sql关联和结果集的映射解决N+1问题-->
+  <resultMap id="selectGradeAndStudentsMap" type="demo.model.Grade" 
+  	extends="BaseResultMap">
+  	<collection property="students" ofType="demo.model.Student">
+  		<!-- 因为两个表的主键都是id 需要修改个别名，否则只能查询出一个记录 -->
+  		<id column="s_id" property="id" jdbcType="INTEGER"/>
+  		<result column="NAME" property="name" jdbcType="VARCHAR" />
+    	<result column="gid" property="gid" jdbcType="INTEGER" />
+  	</collection>		   		 
+  </resultMap>
+  <!-- 避免使用select 标签否则会出现N+1问题 -->
+  <resultMap id="selectGradeAndStudentsMapN+1pro" type="demo.model.Grade" 
+  	extends="BaseResultMap">
+  	<collection property="students" ofType="demo.model.Student" 
+  	select="demo.dao.StudentMapper.selectByPrimaryKey"
+  	column="id">
+  	</collection>		   		 
+  </resultMap>
+  <select id="selectGradeAndStudents" resultMap="selectGradeAndStudentsMap" parameterType="java.lang.Integer" >
+  		select g.id,g.gname,s.id AS s_id,s.name,s.gid 
+  		from grade g,student s
+    	where g.id=s.gid
+    	and g.id = #{id,jdbcType=INTEGER}
+  
+  </select>
+  <select id="selectAllGradeAndStudents" resultMap="selectGradeAndStudentsMap" parameterType="java.lang.Integer" >
+  		select g.id,g.gname,s.id AS s_id,s.name,s.gid 
+  		from grade g,student s
+    	where g.id=s.gid
+  
+  </select>
+  <select id="selectAllGradeAndStudentsN1" resultMap="selectGradeAndStudentsMapN+1pro" parameterType="java.lang.Integer" >
+  	select 
+    <include refid="Base_Column_List" />
+    from grade
+  
+  </select>
+  <sql id="Base_Column_List" >
+    id, gname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from grade
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from grade
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="demo.model.Grade" >
+    insert into grade (id, gname)
+    values (#{id,jdbcType=INTEGER}, #{gname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="demo.model.Grade" >
+    insert into grade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gname != null" >
+        gname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gname != null" >
+        #{gname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="demo.model.Grade" >
+    update grade
+    <set >
+      <if test="gname != null" >
+        gname = #{gname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="demo.model.Grade" >
+    update grade
+    set gname = #{gname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

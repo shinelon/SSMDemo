@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="demo.dao.StipinfoMapper" >
+  <resultMap id="BaseResultMap" type="demo.model.Stipinfo" >
+    <result column="Id" property="id" jdbcType="INTEGER" />
+    <result column="RegionId" property="regionid" jdbcType="INTEGER" />
+    <result column="IpStart" property="ipstart" jdbcType="BIGINT" />
+    <result column="IpEnd" property="ipend" jdbcType="BIGINT" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    Id,RegionId,IpStart,IpEnd,country,province,city
+    from st_ip_info
+    where id = #{id,jdbcType=INTEGER}
+    limit 0,5
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    Id,RegionId,IpStart,IpEnd,country,province,city
+    from st_ip_info
+  </select>
+  <update id="updateIp" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                update st_ip_info   
+                <set>  
+                  country=#{item.country},
+                  province=#{item.province},
+                  city=#{item.city}, 
+                </set>  
+                where id = #{item.id}  
+         </foreach>  
+  </update>
+  <insert id="insert" parameterType="demo.model.Stipinfo" >
+    insert into st_ip_info (Id, RegionId, IpStart, 
+      IpEnd, country, province, 
+      city)
+    values (#{id,jdbcType=INTEGER}, #{regionid,jdbcType=INTEGER}, #{ipstart,jdbcType=BIGINT}, 
+      #{ipend,jdbcType=BIGINT}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="demo.model.Stipinfo" >
+    insert into st_ip_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="regionid != null" >
+        RegionId,
+      </if>
+      <if test="ipstart != null" >
+        IpStart,
+      </if>
+      <if test="ipend != null" >
+        IpEnd,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="regionid != null" >
+        #{regionid,jdbcType=INTEGER},
+      </if>
+      <if test="ipstart != null" >
+        #{ipstart,jdbcType=BIGINT},
+      </if>
+      <if test="ipend != null" >
+        #{ipend,jdbcType=BIGINT},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
