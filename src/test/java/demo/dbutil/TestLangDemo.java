@@ -1,4 +1,4 @@
-package demo.util;
+package demo.dbutil;
 
 import java.io.File;
 import java.io.FileInputStream;
