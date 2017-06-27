@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="gname" property="gname" jdbcType="VARCHAR" />
   </resultMap>
-  <!-- 1个年级 多个学生 1-N 使用sql关联和结果集的映射解决N+1问题-->
+  <!-- 1个年级 多个学生 1-N 使用sql关联和结果集的映射解决N+1问题  若是 1对1使用association-->
   <resultMap id="selectGradeAndStudentsMap" type="demo.model.Grade" 
   	extends="BaseResultMap">
   	<collection property="students" ofType="demo.model.Student">
